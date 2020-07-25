@@ -4,9 +4,10 @@ plugins {
     id 'java'
 }
 
-group = 'io.github.datumcenter'
+group = 'io.gallery'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
+jar.enabled = true
 
 repositories {
     maven {
@@ -17,8 +18,8 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
