@@ -3,7 +3,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
 }
-
+archivesBaseName = 'io.gallery.util'
 group = 'io.gallery'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'

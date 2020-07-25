@@ -1,2 +1,2 @@
-# utility
-utility of Java developing
+# util
+util of Java developing

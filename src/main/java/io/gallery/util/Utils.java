@@ -1,4 +1,4 @@
-package io.gallery.utility;
+package io.gallery.util;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
