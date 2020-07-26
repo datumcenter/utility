@@ -34,7 +34,7 @@ public class Utils {
     /**
      * 获得request对象
      *
-     * @return
+     * @return HttpServletRequest
      */
     public static HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -43,13 +43,13 @@ public class Utils {
     /**
      * 通过正则获取内容
      *
-     * @param string
-     * @param pattern
-     * @return
+     * @param input   输入
+     * @param pattern 正则
+     * @return String
      */
-    public static String getByPattern(String string, String pattern) {
+    public static String getByPattern(String input, String pattern) {
         String result = "";
-        Matcher matcher = Pattern.compile(pattern).matcher(string);
+        Matcher matcher = Pattern.compile(pattern).matcher(input);
         while (matcher.find()) {
             result = matcher.group(0);
             break;
@@ -60,40 +60,40 @@ public class Utils {
     /**
      * 字符串判空
      *
-     * @param string
-     * @return
+     * @param input 输入
+     * @return Boolean
      */
-    public static Boolean isNull(String string) {
-        return null == string || "".equals(string);
+    public static Boolean isNull(String input) {
+        return null == input || "".equals(input);
     }
 
     /**
      * 字符串判空
      *
-     * @param string
-     * @return
+     * @param input 输入
+     * @return Boolean
      */
-    public static Boolean isNotNull(String string) {
-        return !isNull(string);
+    public static Boolean isNotNull(String input) {
+        return !isNull(input);
     }
 
     /**
      * 截取字符串
      *
-     * @param string
-     * @param start
-     * @param end
-     * @return
+     * @param input 输入
+     * @param start 开始
+     * @param end   结束
+     * @return String
      */
-    public static String subString(String string, int start, int end) {
-        if (!isNull(string) && string.length() >= end) {
-            string = string.substring(start, end);
-        } else if (!isNull(string) && string.length() < end) {
-            string = string.substring(start);
+    public static String subString(String input, int start, int end) {
+        if (!isNull(input) && input.length() >= end) {
+            input = input.substring(start, end);
+        } else if (!isNull(input) && input.length() < end) {
+            input = input.substring(start);
         } else {
             return null;
         }
-        return string;
+        return input;
 
     }
 
@@ -326,85 +326,37 @@ public class Utils {
     /**
      * 首字母转大写
      *
-     * @param string
-     * @return
+     * @param input 输入
+     * @return String
      */
-    public static String toUpperCaseFirst(String string) {
-        if (Character.isUpperCase(string.charAt(0))) {
-            return string;
+    public static String toUpperCaseFirst(String input) {
+        if (Character.isUpperCase(input.charAt(0))) {
+            return input;
         } else {
-            return Character.toUpperCase(string.charAt(0)) + string.substring(1);
+            return Character.toUpperCase(input.charAt(0)) + input.substring(1);
         }
     }
 
     /**
      * 首字母转小写
      *
-     * @param string
-     * @return
+     * @param input 输入
+     * @return String
      */
-    public static String toLowerCaseFirst(String string) {
-        if (Character.isLowerCase(string.charAt(0))) {
-            return string;
+    public static String toLowerCaseFirst(String input) {
+        if (Character.isLowerCase(input.charAt(0))) {
+            return input;
         } else {
-            return Character.toLowerCase(string.charAt(0)) + string.substring(1);
+            return Character.toLowerCase(input.charAt(0)) + input.substring(1);
         }
-    }
-
-
-    /**
-     * 获取Mac地址
-     *
-     * @return
-     * @throws Exception
-     */
-    public static String getMacAddr() {
-        String result = "";
-        try {
-            Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
-            StringBuilder sb = new StringBuilder();
-            ArrayList<String> tmpMacList = new ArrayList<>();
-            while (en.hasMoreElements()) {
-                NetworkInterface iface = en.nextElement();
-                List<InterfaceAddress> addrs = iface.getInterfaceAddresses();
-                for (InterfaceAddress addr : addrs) {
-                    InetAddress ip = addr.getAddress();
-                    NetworkInterface network = NetworkInterface.getByInetAddress(ip);
-                    if (network == null) {
-                        continue;
-                    }
-                    byte[] mac = network.getHardwareAddress();
-                    if (mac == null) {
-                        continue;
-                    }
-                    sb.delete(0, sb.length());
-                    for (int i = 0; i < mac.length; i++) {
-                        sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
-                    }
-                    tmpMacList.add(sb.toString());
-                }
-            }
-            if (tmpMacList.size() <= 0) {
-                return result;
-            }
-            List<String> unique = tmpMacList.stream().distinct().collect(Collectors.toList());
-            List<String> real = unique.stream().filter(s -> s.length() == 17).collect(Collectors.toList());
-            if (real != null && real.size() > 0) {
-                result = real.get(0);
-            } else if (unique.size() > 0) {
-                result = unique.get(0);
-            }
-        } catch (Exception e) {
-            logger.error("getMacAddr fail: " + e.getMessage(), e.getCause());
-        }
-        return result;
     }
 
     /**
      * 字符串md5加密
      *
-     * @param input
-     * @return
+     * @param input 输入
+     * @return String
+     * @throws NoSuchAlgorithmException NoSuchAlgorithmException
      */
     public static String getMD5(String input) throws NoSuchAlgorithmException {
         if (input != null) {
@@ -423,26 +375,26 @@ public class Utils {
     /**
      * 解压缩字节
      *
-     * @param bytes
-     * @return
+     * @param input 输入
+     * @return String
      */
-    public static String unCompress(byte[] bytes) {
-        return unCompress(bytes, "UTF-8");
+    public static String unCompress(byte[] input) {
+        return unCompress(input, "UTF-8");
     }
 
     /**
      * 解压缩字节
      *
-     * @param bytes
-     * @param encoding
-     * @return
+     * @param input    输入
+     * @param encoding 编码
+     * @return String
      */
-    public static String unCompress(byte[] bytes, String encoding) {
-        if (bytes == null || bytes.length == 0) {
+    public static String unCompress(byte[] input, String encoding) {
+        if (input == null || input.length == 0) {
             return null;
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        ByteArrayInputStream in = new ByteArrayInputStream(input);
         try {
             GZIPInputStream ungzip = new GZIPInputStream(in);
             byte[] buffer = new byte[256];
@@ -460,29 +412,29 @@ public class Utils {
     /**
      * 压缩字符串
      *
-     * @param string
-     * @return
+     * @param input 输入
+     * @return String
      */
-    public static byte[] compress(String string) {
-        return compress(string, "UTF-8");
+    public static byte[] compress(String input) {
+        return compress(input, "UTF-8");
     }
 
     /**
      * 压缩字符串
      *
-     * @param string
-     * @param encoding
-     * @return
+     * @param input    输入
+     * @param encoding 编码
+     * @return String
      */
-    public static byte[] compress(String string, String encoding) {
-        if (string == null || string.length() == 0) {
+    public static byte[] compress(String input, String encoding) {
+        if (input == null || input.length() == 0) {
             return null;
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         GZIPOutputStream gzip;
         try {
             gzip = new GZIPOutputStream(out);
-            gzip.write(string.getBytes(encoding));
+            gzip.write(input.getBytes(encoding));
             gzip.close();
         } catch (Exception e) {
             logger.error("compress失败：" + e.getMessage(), e.getCause());
