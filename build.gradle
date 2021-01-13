@@ -46,7 +46,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId "io.github.datumcenter"
-            artifactId "io.gallery.util"
+            artifactId "gallery-util"
             version "${version}"
             from components.java
             artifact sourcesJar
