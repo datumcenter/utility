@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'org.springframework.boot' version '2.3.8.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'maven-publish'
@@ -20,8 +20,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.2'
+    compileOnly 'org.apache.poi:poi-ooxml-schemas:4.0.0'
+    compileOnly 'org.apache.poi:poi-ooxml:4.0.0'
+    compileOnly 'org.apache.poi:poi:4.0.0'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
